@@ -404,7 +404,10 @@ class WebsocketConnection:
                     return
 
             if user._name.lower() == self.nick.lower():
-                self._channel_cache[channel.name]['bot'] = user
+                if channel.name not in self._channel_cache:
+                    self._channel_cache[channel.name] = {'channel': channel, 'bot': user}
+                else:
+                    self._channel_cache[channel.name]['bot'] = user
 
             await self._dispatch('userstate', user)
 
